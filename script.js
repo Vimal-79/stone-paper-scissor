@@ -1,5 +1,5 @@
 const slots = document.querySelectorAll(".box");
-const newBtn = document.querySelector("#new-btn");
+const newGameBtn = document.querySelector("#new-btn");
 const resetBtn = document.querySelector("#reset-btn");
 let msg = document.querySelector("#msg");
 
@@ -57,6 +57,7 @@ const checkWinner = () => {
 const showWinner = (winner) => {
     msg.innerText = `Congratulation , The winner is ${winner}`;
     msg.classList.remove("hide");
+    newGameBtn.classList.remove("hide");
     declareWinner();
 }
 
@@ -72,9 +73,10 @@ const reset = () => {
         box.disabled = false;
         turnPlayer1 = true;
         msg.classList.add("hide");
+        newGameBtn.classList.add("hide");
 
     }
 }
 
 resetBtn.addEventListener('click' , reset);
-newBtn.addEventListener('click' , reset);
+newGameBtn.addEventListener('click' , reset);

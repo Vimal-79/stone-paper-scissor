@@ -44,7 +44,6 @@ header{
 footer{
     display: flex;
     justify-content: center;
-    gap: 10vmin;
 }
 
 #reset-btn , #new-btn{
@@ -54,6 +53,10 @@ footer{
     border: none;
     border-radius: 1rem;
     font-size: 3vmin;
+}
+
+#new-btn{
+    margin-top: 20px;
 }
 
 #msg{
