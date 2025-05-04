@@ -74,9 +74,8 @@ const reset = () => {
         turnPlayer1 = true;
         msg.classList.add("hide");
         newGameBtn.classList.add("hide");
-
     }
-}
+};
 
 resetBtn.addEventListener('click' , reset);
 newGameBtn.addEventListener('click' , reset);
