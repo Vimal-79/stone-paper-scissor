@@ -1,75 +1,89 @@
-const choice = document.getElementsByClassName("choice");
-const msg = document.getElementById("msg");
-const rock = document.querySelector("#rock");
-const paper = document.querySelector("#paper");
-const scissor = document.querySelector("#scissor");
-const playerScore = document.querySelector("#player-score");
-const botScore = document.querySelector("#bot-score");
-const resetBtn = document.querySelector("#reset");
+let playerScore = 0;
+let botScore = 0;
 
+const msg = document.querySelector("#msg");
+const player_score = document.querySelector("#player-score");
+const bot_score = document.querySelector("#bot-score");
+const newGameBtn = document.querySelector("#reset");
 
-let botChoice;
-let userChoice;
+const choices = document.querySelectorAll(".choice");
 
-// stone == 0
-// paper == 1
-// scissor == 2
+// function for get choice from computer
+function botPlay(choiceId){
+    const botOptions = ["rock" , "paper" , "scissor"];
+    let randomOption = Math.floor(Math.random()*3);
+    const botChoice = botOptions[randomOption];
+    const playerChoice = choiceId ;
+    checkForWinner(botChoice , playerChoice);
+}
 
-rock.addEventListener('click' , () => {
-    userChoice = 0;
-    botChoice =  Math.floor(Math.random()*3)
-    declarerationOfWinner();
-});
+// taking user input
+choices.forEach((choice) => {
+    choice.addEventListener('click' , () => {
+        const choiceId =  choice.getAttribute("id")
+        botPlay(choiceId);
+    })
+})
 
-paper.addEventListener('click' , () => {
-    userChoice = 1;
-    botChoice =  Math.floor(Math.random()*3)
-    declarerationOfWinner();
-});
-
-scissor.addEventListener('click' , () => {
-    userChoice = 2;
-    botChoice =  Math.floor(Math.random()*3)
-    declarerationOfWinner();
-});
-
-resetBtn.addEventListener('click' , reset);
-
-
-function declarerationOfWinner (){
-
-    // user win condition
-
-    if((userChoice == 0 && botChoice == 2) || (userChoice == 1 && botChoice == 0) || (userChoice == 2 && botChoice == 1) ){
-        msg.classList.remove("hide");
-        msg.classList.remove("msg-for-lose");
-        msg.classList.remove("msg-for-draw");
-        msg.classList.add("msg-for-win");
-        msg.innerText = `You won the game`;
-        playerScore.innerText = parseInt(playerScore.innerText)+ 1 ;
+function checkForWinner(botChoice , playerChoice){
+    // game draw condition
+    if(botChoice === playerChoice){
+        drawGame();
     }
-    // user lose condition
-    else if((userChoice == 0 && botChoice == 1) || (userChoice == 1 && botChoice == 2) || (userChoice == 2 && botChoice == 0) ){
-        msg.classList.remove("hide");
-        msg.classList.remove("msg-for-win");
-        msg.classList.remove("msg-for-draw");
-        msg.classList.add("msg-for-lose");
-        msg.innerText = "You loss the game";
-        botScore.innerText = parseInt(botScore.innerText) + 1 ;
+
+    // player wining conditon 
+    else if(botChoice === "rock"){
+        if(playerChoice === "paper"){
+            winGame(botChoice, playerChoice);
+        }
+
+        // player losing condition
+        else if(playerChoice === "scissor"){
+            lossGame(botChoice , playerChoice);
+        }
     }
-    // draw condition
-    else if((userChoice == 0 && botChoice == 0) || (userChoice == 1 && botChoice == 1) || (userChoice == 2 && botChoice == 2) ){
-        msg.classList.remove("hide");
-        msg.classList.remove("msg-for-win");
-        msg.classList.remove("msg-for-lose");
-        msg.classList.add("msg-for-draw");
-        msg.innerText = "The Game was a draw";
+
+    // player wining condition
+    else if(botChoice === "paper"){
+        if(playerChoice === "scissor"){
+            winGame(botChoice , playerChoice);
+        }
+
+        // player losing condition
+        else if(playerChoice === "rock"){
+            lossGame(botChoice , playerChoice);
+        }
     }
 }
 
-function reset (){
-    playerScore.innerText = 0 ;
-    botScore.innerText = 0 ;
-    msg.classList.remove("msg-for-win" , "msg-for-lose" , "msg-for-draw");
+function drawGame(){
+    msg.innerText = `Game was a draw`;
+    msg.classList.remove("hide" , "msg-for-win" , "msg-for-lose");
+    msg.classList.add("msg-for-draw");
+}
+
+function winGame(botChoice , playerChoice){
+    msg.innerText = `You won, ${playerChoice} beats ${botChoice}`;
+    msg.classList.remove("hide" , "msg-for-lose" , "msg-for-draw");
+    msg.classList.add("msg-for-win");
+    playerScore += 1 ;
+    player_score.innerText = playerScore;
+}
+
+function lossGame(botChoice , playerChoice){
+    msg.innerText = `You lose, ${botChoice} beats ${playerChoice}`
+    msg.classList.remove("hide" , "msg-for-win" , "msg-for-draw");
+    msg.classList.add("msg-for-lose");
+    botScore += 1;
+    bot_score.innerText = botScore;
+}
+
+// new game button 
+
+newGameBtn.addEventListener('click' , newGame)
+
+function newGame(){
+    bot_score.innerText = botScore = 0;
+    player_score.innerText = playerScore = 0;
     msg.classList.add("hide");
 }
